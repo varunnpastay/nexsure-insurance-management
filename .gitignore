@@ -6,3 +6,5 @@ frontend/dist/
 .settings/
 .classpath
 .project
+backend/logs/
+*.log

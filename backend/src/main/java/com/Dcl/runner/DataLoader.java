@@ -1,5 +1,7 @@
 package com.Dcl.runner;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,8 @@ import com.Dcl.repo.UserRepository;
 @Component
 public class DataLoader implements CommandLineRunner {
 
+	private static final Logger logger=LoggerFactory.getLogger(DataLoader.class);
+
 	@Autowired
 	private UserRepository urepo;
 	
@@ -26,6 +30,7 @@ public class DataLoader implements CommandLineRunner {
 	
 	@Override
 	public void run(String... args) throws Exception {
+		logger.info("DataLoader started - checking default data");
 		
 		//default admin (admin@gmail.com / admin123)
 		if(urepo.findByEmail("admin@gmail.com").isEmpty()) {
@@ -35,7 +40,7 @@ public class DataLoader implements CommandLineRunner {
 			admin.setPassword("admin123");
 			admin.setRole("ADMIN");
 			urepo.save(admin);
-			System.out.println("Admin created: admin@gmail.com / admin123");
+			logger.info("Default admin created: admin@gmail.com");
 		}
 		
 		//demo data only when there are no categories yet
@@ -49,7 +54,7 @@ public class DataLoader implements CommandLineRunner {
 			addPolicy(life, "Term Life Secure", 9000.0, 5000000.0, 120, "Pays your family if anything happens to you.");
 			addPolicy(vehicle, "Car Comprehensive", 8500.0, 600000.0, 12, "Own damage + third party cover for cars.");
 			addPolicy(vehicle, "Two-Wheeler Basic", 1500.0, 80000.0, 12, "Third party + theft cover for bikes.");
-			System.out.println("Demo categories and policies added");
+			logger.info("Demo categories and policies added");
 		}
 	}
 	
